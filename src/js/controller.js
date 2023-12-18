@@ -20,6 +20,9 @@ const controlRecipes = async function () {
     console.log(id);
     if (!id) return;
     recipeView.renderSpinner(); //presentation logic
+
+    //0-Update results view to mark selected search result
+    resultsView.update(model.getSearchResultsPage());
     //1-loading recipe
     await model.loadRecipe(id); //async fonksiyonu yine bir async fonksiyonu çağırdı ve bu async fonksiyonunun sonu gelmeden devam edebilir bu yüzden bu fonksiyonumuzun başına await ekliyruz ki bunun executionu bitene kadar diğer işlemlere geçmesin
 
@@ -27,6 +30,7 @@ const controlRecipes = async function () {
     //2)Rendering recipe
 
     recipeView.render(model.state.recipe);
+    //Test
   } catch (err) {
     recipeView.renderError(err);
   }
@@ -59,10 +63,19 @@ const controlPagination = function (goToPage) {
   // 2-Render new pagination buttons
   paginationView.render(model.state.search);
 };
+
+const controlServings = function (newServings) {
+  //Update the recipe(in state)
+  model.updateServings(newServings);
+  //render the current recipes(update the recipe view)
+  // recipeView.render(model.state.recipe);
+  recipeView.update(model.state.recipe);
+};
 const init = function () {
   recipeView.addHandlerRender(controlRecipes);
   searchview.addHandlerSearch(controlSearchResult);
   paginationView.addHandlerClick(controlPagination);
+  recipeView.addHandlerUpdateServings(controlServings);
 };
 init();
 
