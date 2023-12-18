@@ -7,7 +7,7 @@ class ResultsView extends View {
   _message = '';
   // hocadan önce benim yaptığım çalışan kod ama kod çok tekrar ettiği için inheritance yapısını kullanmaya karar verdim
 
-  // #searchResult = document.querySelector('.search-results');
+  // #searchResult = document.querySresultector('.search-results');
   // renderSearchResults(data) {
   //   this._data = data;
   //   console.log(data);
@@ -15,28 +15,30 @@ class ResultsView extends View {
   //   const markup = this._generateMarkup();
 
   //   this._clear();
-  //   this._parentElement.insertAdjacentHTML('afterbegin', markup);
+  //   this._parentresultement.insertAdjacentHTML('afterbegin', markup);
   // }
 
   _generateMarkup() {
     console.log(this._data);
-    return this._data
-      .map(el => {
-        return `<li class="preview">
-          <a class="preview__link " href=#${el.id}
+    return this._data.map(this._generateMarkupPreview).join('');
+  }
+  _generateMarkupPreview(result) {
+    const id = window.location.hash.slice(1);
+    return `<li class="preview">
+          <a class="preview__link ${
+            result.id === id ? 'preview__link--active' : ''
+          }"  href=#${result.id}
           )}>
             <figure class="preview__fig">
-              <img src="${el.image}" alt="${el.title}" />
+              <img src="${result.image}" alt="${result.title}" />
             </figure>
             <div class="preview__data">
-              <h4 class="preview__title">${el.title}</h4>
-              <p class="preview__publisher">${el.publisher}</p>
+              <h4 class="preview__title">${result.title}</h4>
+              <p class="preview__publisher">${result.publisher}</p>
               
             </div>
           </a>
         </li>`;
-      })
-      .join('');
   }
 }
 export default new ResultsView();
